@@ -1,0 +1,594 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Timecount API",
+    "description": "Provides access to the timecount services",
+    "contact": {
+      "name": "Timecount Support",
+      "email": "support@timecount.com",
+      "url": "https://timecount.com"
+    },
+    "version": "1.12.0"
+  },
+  "servers": [
+    { "url": "https://tutorial.formatgold.de/api" }
+  ],
+  "tags": [
+    {
+      "name": "Employees",
+      "description": "These endpoints provide you the possibility of adding, modifying and deleting employees"
+    },
+    { "name": "TimeBalances.Subtotals" }
+  ],
+  "paths": {
+    "/employees": {
+      "get": {
+        "tags": ["Employees"],
+        "operationId": "getEmployees",
+        "parameters": [
+          {
+            "name": "filter[employee_visibility]",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["all", "0", "1"],
+              "default": "all"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieves all employees with employee visibility filter (Required: filter[employee_visibility])"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Employees"],
+        "operationId": "postEmployees",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/PostEmployees" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Creates a new employee record (Required: first_name, last_name, department_id)"
+          }
+        }
+      }
+    },
+    "/employees/search/{q}": {
+      "get": {
+        "tags": ["Employees"],
+        "operationId": "getEmployeesSearchQ",
+        "description": "Note: output is limited to 20 entries",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Searches employees by a token/counter parameter (Limited to 20 entries, Required: q parameter)"
+          }
+        }
+      }
+    },
+    "/employees/months": {
+      "get": {
+        "tags": ["TimeBalances.Subtotals"],
+        "operationId": "getEmployeesMonths",
+        "description": "Outputs a summary of hours worked per month accumulated over all employees",
+        "parameters": [
+          {
+            "name": "filter[locked]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["all", "0", "1"],
+              "default": "all"
+            }
+          },
+          {
+            "name": "filter[range_begin]",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "nullable": true }
+          },
+          {
+            "name": "filter[range_end]",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "nullable": true }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Outputs summary of hours worked per month accumulated over all employees with optional filters (locked, range_begin, range_end)"
+          }
+        }
+      }
+    },
+    "/employees/{id}": {
+      "get": {
+        "tags": ["Employees"],
+        "operationId": "getEmployeesId",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Retrieves detailed information for a specific employee by ID" }
+        }
+      },
+      "put": {
+        "tags": ["Employees"],
+        "operationId": "putEmployeesId",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/PutEmployeesId" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Completely updates an existing employee record (Required: id, department_id)" }
+        }
+      },
+      "patch": {
+        "tags": ["Employees"],
+        "operationId": "patchEmployeesId",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/PatchEmployeesId" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Partially updates specific fields of an employee record (Required: id)" }
+        }
+      },
+      "delete": {
+        "tags": ["Employees"],
+        "operationId": "deleteEmployeesId",
+        "description": "Permanently deletes an employee (only if deletable)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Deleted" }
+        }
+      }
+    },
+    "/employees/{id}/summary": {
+      "get": {
+        "tags": ["Employees"],
+        "operationId": "getEmployeesIdSummary",
+        "description": "Provides overview of vacation and total/target/balance hours for an employee",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "filter[month_locked]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["all", "0", "1"],
+              "default": "all"
+            }
+          },
+          {
+            "name": "filter[range_begin]",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "nullable": true }
+          },
+          {
+            "name": "filter[range_end]",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "nullable": true }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Overview returned" }
+        }
+      }
+    },
+    "/employees/deletable/{id}": {
+      "get": {
+        "tags": ["Employees"],
+        "operationId": "getEmployeesDeletableId",
+        "description": "Check if employee is deletable",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Deletable status returned" }
+        }
+      }
+    },
+    "/employees/token/{token}": {
+      "get": {
+        "tags": ["Employees"],
+        "operationId": "getEmployeesTokenToken",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Retrieves employee information using their token instead of ID" }
+        }
+      }
+    },
+    "/employees/previous/{id}": {
+      "put": {
+        "tags": ["Employees"],
+        "operationId": "putEmployeesPreviousId",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/PutEmployeesPreviousId" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Navigates to the previous employee and updates their details (Required: id)" }
+        }
+      }
+    },
+    "/employees/next/{id}": {
+      "put": {
+        "tags": ["Employees"],
+        "operationId": "putEmployeesNextId",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/PutEmployeesNextId" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Navigates to the next employee and updates their details (Required: id)" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PutEmployeesId": {
+        "type": "object",
+        "required": ["department_id"],
+        "properties": {
+          "department_id": { "type": "integer", "format": "int32" },
+          "department_ids_additional": {
+            "type": "array",
+            "items": { "type": "integer", "format": "int32" }
+          },
+          "secure_token": { "type": "string" },
+          "token_prefix": { "type": "string" },
+          "token_postfix": { "type": "string" },
+          "token_counter": { "type": "integer", "format": "int32" },
+          "datev_id": { "type": "string" },
+          "visibility": { "type": "integer", "enum": [0, 1], "default": 1 },
+          "account_number": { "type": "string", "default": "" },
+          "own_car": { "type": "integer", "enum": [0, 1] },
+          "first_entry_date": { "type": "string", "format": "date" },
+          "discharge_date": { "type": "string", "format": "date" },
+          "re_entry_date": { "type": "string", "format": "date" },
+          "anonymized_at": { "type": "string", "format": "date" },
+          "card_title": { "type": "string" },
+          "contract_limitation_date": { "type": "string", "format": "date" },
+          "alternative_account_holder": { "type": "string" },
+          "social_security_number": { "type": "string" },
+          "health_insurance_number": { "type": "string" },
+          "health_insurance_type": { "type": "integer", "enum": [0, 1, 2, 3, 4] },
+          "health_insurance_contribution_type": { "type": "integer", "enum": [0, 1, 2, 3, 4, 5, 6] },
+          "pension_insurance_contribution_type": { "type": "integer", "enum": [0, 1, 2, 3] },
+          "unemployement_insurance_contribution_type": { "type": "integer", "enum": [0, 1, 2] },
+          "nursing_insurance_contribution_type": { "type": "integer", "enum": [0, 1, 2] },
+          "additional_contribution_ignored": { "type": "boolean" },
+          "social_legal_treatment": { "type": "integer", "enum": [0, 1] },
+          "social_allocation_method": { "type": "integer", "enum": [0, 1, 2] },
+          "birth_date": { "type": "string", "format": "date" },
+          "birth_place": { "type": "string" },
+          "nationality": { "type": "string" },
+          "work_permit": { "type": "string" },
+          "birth_name": { "type": "string" },
+          "gender": { "type": "integer", "enum": [0, 1, 2] },
+          "child_allowance": { "type": "string" },
+          "monthly_tax_allowance": { "type": "string" },
+          "annual_tax_allowance": { "type": "string" },
+          "requested_annual_tax_allowance": { "type": "string" },
+          "flat_rate_taxation": { "type": "boolean" },
+          "tax_identification_number": { "type": "string" },
+          "municipal_key": { "type": "string" },
+          "tax_office_number": { "type": "string" },
+          "payment_method": { "type": "integer", "enum": [0, 1] },
+          "wage_garnishment": { "type": "boolean" },
+          "factor": { "type": "string" },
+          "transfer_of_personnel": { "type": "boolean" },
+          "employer_relations_type": { "type": "integer", "enum": [1, 2] },
+          "dispo_channel": {
+            "type": "string",
+            "enum": ["email", "mobile", "push"]
+          },
+          "asset_creating_payment": { "type": "boolean" },
+          "employee_tags": { "type": "array", "items": { "type": "string" } },
+          "driving_licenses": { "type": "array", "items": { "type": "string" } },
+          "bank_id": { "type": "string" },
+          "health_insurance_id": { "type": "string" },
+          "tax_bracket_id": { "type": "string" },
+          "confession_id": { "type": "string" },
+          "spouse_confession_id": { "type": "string" },
+          "civil_state_id": { "type": "string" },
+          "employment_id": { "type": "string" },
+          "shorthand": { "type": "string" },
+          "first_name": { "type": "string" },
+          "last_name": { "type": "string" },
+          "title": { "type": "string", "enum": ["c", "m", "f", "d"] },
+          "street": { "type": "string" },
+          "street_no": { "type": "string" },
+          "zipcode": { "type": "string" },
+          "place": { "type": "string" },
+          "country": { "type": "string" },
+          "address_addon": { "type": "string" },
+          "mobile": { "type": "string" },
+          "phone": { "type": "string" },
+          "email": { "type": "string" },
+          "fax": { "type": "string" },
+          "store": { "type": "object", "additionalProperties": true }
+        },
+        "description": "Employee full-update payload"
+      },
+      "PostEmployees": {
+        "type": "object",
+        "required": ["first_name", "last_name", "department_id"],
+        "properties": {
+          "first_name": { "type": "string" },
+          "last_name": { "type": "string" },
+          "department_id": { "type": "integer", "format": "int32" },
+          "secure_token": { "type": "string" },
+          "department_ids_additional": {
+            "type": "array",
+            "items": { "type": "integer", "format": "int32" }
+          },
+          "datev_id": { "type": "string" },
+          "visibility": { "type": "integer", "enum": [0, 1], "default": 1 },
+          "account_number": { "type": "string", "default": "" },
+          "own_car": { "type": "integer", "enum": [0, 1] },
+          "first_entry_date": { "type": "string", "format": "date" },
+          "re_entry_date": { "type": "string", "format": "date" },
+          "discharge_date": { "type": "string", "format": "date" },
+          "anonymized_at": { "type": "string", "format": "date" },
+          "card_title": { "type": "string" },
+          "contract_limitation_date": { "type": "string", "format": "date" },
+          "alternative_account_holder": { "type": "string" },
+          "social_security_number": { "type": "string" },
+          "health_insurance_number": { "type": "string" },
+          "health_insurance_type": { "type": "integer", "enum": [0, 1, 2, 3, 4] },
+          "health_insurance_contribution_type": { "type": "integer", "enum": [0, 1, 2, 3, 4, 5, 6] },
+          "pension_insurance_contribution_type": { "type": "integer", "enum": [0, 1, 2, 3] },
+          "unemployement_insurance_contribution_type": { "type": "integer", "enum": [0, 1, 2] },
+          "nursing_insurance_contribution_type": { "type": "integer", "enum": [0, 1, 2] },
+          "additional_contribution_ignored": { "type": "boolean" },
+          "social_legal_treatment": { "type": "integer", "enum": [0, 1] },
+          "social_allocation_method": { "type": "integer", "enum": [0, 1, 2] },
+          "birth_date": { "type": "string", "format": "date" },
+          "birth_place": { "type": "string" },
+          "nationality": { "type": "string" },
+          "work_permit": { "type": "string" },
+          "birth_name": { "type": "string" },
+          "gender": { "type": "integer", "enum": [0, 1, 2] },
+          "child_allowance": { "type": "string" },
+          "monthly_tax_allowance": { "type": "string" },
+          "annual_tax_allowance": { "type": "string" },
+          "requested_annual_tax_allowance": { "type": "string" },
+          "flat_rate_taxation": { "type": "boolean" },
+          "tax_identification_number": { "type": "string" },
+          "municipal_key": { "type": "string" },
+          "tax_office_number": { "type": "string" },
+          "payment_method": { "type": "integer", "enum": [0, 1] },
+          "wage_garnishment": { "type": "boolean" },
+          "asset_creating_payment": { "type": "boolean" },
+          "factor": { "type": "string" },
+          "transfer_of_personnel": { "type": "boolean" },
+          "employer_relations_type": { "type": "integer", "enum": [1, 2] },
+          "dispo_channel": {
+            "type": "string",
+            "enum": ["email", "mobile", "push"]
+          },
+          "employee_tags": { "type": "array", "items": { "type": "string" } },
+          "driving_licenses": { "type": "array", "items": { "type": "string" } },
+          "bank_id": { "type": "string" },
+          "health_insurance_id": { "type": "string" },
+          "tax_bracket_id": { "type": "string" },
+          "confession_id": { "type": "string" },
+          "spouse_confession_id": { "type": "string" },
+          "civil_state_id": { "type": "string" },
+          "employment_id": { "type": "string" },
+          "shorthand": { "type": "string" },
+          "title": { "type": "string", "enum": ["c", "m", "f", "d"] },
+          "street": { "type": "string" },
+          "street_no": { "type": "string" },
+          "zipcode": { "type": "string" },
+          "place": { "type": "string" },
+          "country": { "type": "string" },
+          "address_addon": { "type": "string" },
+          "mobile": { "type": "string" },
+          "phone": { "type": "string" },
+          "email": { "type": "string" },
+          "fax": { "type": "string" },
+          "store": { "type": "object", "additionalProperties": true }
+        },
+        "description": "Employee create payload"
+      },
+      "PatchEmployeesId": {
+        "type": "object",
+        "description": "Employee partial-update payload",
+        "properties": {
+          "secure_token": { "type": "string" },
+          "department_id": { "type": "integer", "format": "int32" },
+          "department_ids_additional": {
+            "type": "array",
+            "items": { "type": "integer", "format": "int32" }
+          },
+          "token_prefix": { "type": "string" },
+          "token_postfix": { "type": "string" },
+          "token_counter": { "type": "integer", "format": "int32" },
+          "datev_id": { "type": "string" },
+          "visibility": { "type": "integer", "enum": [0, 1] },
+          "account_number": { "type": "string" },
+          "own_car": { "type": "integer", "enum": [0, 1] },
+          "first_entry_date": { "type": "string", "format": "date" },
+          "discharge_date": { "type": "string", "format": "date" },
+          "re_entry_date": { "type": "string", "format": "date" },
+          "anonymized_at": { "type": "string", "format": "date" },
+          "card_title": { "type": "string" },
+          "contract_limitation_date": { "type": "string", "format": "date" },
+          "alternative_account_holder": { "type": "string" },
+          "social_security_number": { "type": "string" },
+          "health_insurance_number": { "type": "string" },
+          "health_insurance_type": { "type": "integer", "enum": [0, 1, 2, 3, 4] },
+          "health_insurance_contribution_type": { "type": "integer", "enum": [0, 1, 2, 3, 4, 5, 6] },
+          "pension_insurance_contribution_type": { "type": "integer", "enum": [0, 1, 2, 3] },
+          "unemployement_insurance_contribution_type": { "type": "integer", "enum": [0, 1, 2] },
+          "nursing_insurance_contribution_type": { "type": "integer", "enum": [0, 1, 2] },
+          "additional_contribution_ignored": { "type": "boolean" },
+          "social_legal_treatment": { "type": "integer", "enum": [0, 1] },
+          "social_allocation_method": { "type": "integer", "enum": [0, 1, 2] },
+          "birth_date": { "type": "string", "format": "date" },
+          "birth_place": { "type": "string" },
+          "nationality": { "type": "string" },
+          "work_permit": { "type": "string" },
+          "birth_name": { "type": "string" },
+          "gender": { "type": "integer", "enum": [0, 1, 2] },
+          "child_allowance": { "type": "string" },
+          "monthly_tax_allowance": { "type": "string" },
+          "annual_tax_allowance": { "type": "string" },
+          "requested_annual_tax_allowance": { "type": "string" },
+          "flat_rate_taxation": { "type": "boolean" },
+          "tax_identification_number": { "type": "string" },
+          "municipal_key": { "type": "string" },
+          "tax_office_number": { "type": "string" },
+          "payment_method": { "type": "integer", "enum": [0, 1] },
+          "wage_garnishment": { "type": "boolean" },
+          "factor": { "type": "string" },
+          "transfer_of_personnel": { "type": "boolean" },
+          "employer_relations_type": { "type": "integer", "enum": [1, 2] },
+          "dispo_channel": {
+            "type": "string",
+            "enum": ["email", "mobile", "push"]
+          },
+          "asset_creating_payment": { "type": "boolean" },
+          "employee_tags": { "type": "array", "items": { "type": "string" } },
+          "driving_licenses": { "type": "array", "items": { "type": "string" } },
+          "bank_id": { "type": "string" },
+          "health_insurance_id": { "type": "string" },
+          "tax_bracket_id": { "type": "string" },
+          "confession_id": { "type": "string" },
+          "spouse_confession_id": { "type": "string" },
+          "civil_state_id": { "type": "string" },
+          "employment_id": { "type": "string" },
+          "shorthand": { "type": "string" },
+          "first_name": { "type": "string" },
+          "last_name": { "type": "string" },
+          "title": { "type": "string", "enum": ["c", "m", "f", "d"] },
+          "street": { "type": "string" },
+          "street_no": { "type": "string" },
+          "zipcode": { "type": "string" },
+          "place": { "type": "string" },
+          "country": { "type": "string" },
+          "address_addon": { "type": "string" },
+          "mobile": { "type": "string" },
+          "phone": { "type": "string" },
+          "email": { "type": "string" },
+          "fax": { "type": "string" },
+          "store": { "type": "object", "additionalProperties": true }
+        }
+      },
+      "PutEmployeesPreviousId": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" }
+        }
+      },
+      "PutEmployeesNextId": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" }
+        }
+      }
+    }
+  }
+}
