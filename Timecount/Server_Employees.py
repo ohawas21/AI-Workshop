@@ -1,5 +1,9 @@
 import json
 import os
+import socket
+import time
+import signal
+import subprocess
 import httpx
 from fastmcp import FastMCP
 
@@ -10,6 +14,23 @@ def load_openapi_spec() -> dict:
     here = os.path.dirname(__file__)
     with open(os.path.join(here, "Employee_schema_3.0.json"), "r", encoding="utf-8") as f:
         return json.load(f)
+
+def free_port(port: int, timeout: float = 3.0):
+    """Evict any process holding the port, then wait for it to be released."""
+    try:
+        result = subprocess.run(["lsof", "-ti", f":{port}"], capture_output=True, text=True)
+        for pid in result.stdout.strip().split("\n"):
+            if pid.strip():
+                os.kill(int(pid.strip()), signal.SIGTERM)
+    except Exception:
+        pass
+
+    deadline = time.time() + timeout
+    while time.time() < deadline:
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            if s.connect_ex(("127.0.0.1", port)) != 0:
+                return  # Port is free
+        time.sleep(0.1)
 
 client = httpx.AsyncClient(
     base_url=BASE_URL,
@@ -26,4 +47,8 @@ mcp = FastMCP.from_openapi(
 )
 
 if __name__ == "__main__":
-    mcp.run(transport="stdio")
+    free_port(8001)
+    try:
+        mcp.run(transport="stdio")
+    except KeyboardInterrupt:
+        pass
