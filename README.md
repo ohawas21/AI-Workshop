@@ -107,8 +107,8 @@ If `which uv` still returns nothing after installing, close your terminal comple
 ### Step 1 — Clone the repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/AI-Workshop-Custom-MCP-Trial-Weather-.git
-cd AI-Workshop-Custom-MCP-Trial-Weather-/weather
+git clone https://github.com/YOUR_USERNAME/AI-Workshop.git
+cd AI-Workshop/weather
 ```
 
 ### Step 2 — Run the server once to install dependencies
@@ -139,7 +139,7 @@ Add the weather server under `mcpServers`:
       "command": "/Users/YOUR_USERNAME/.local/bin/uv",
       "args": [
         "--directory",
-        "/Users/YOUR_USERNAME/AI-Workshop-Custom-MCP-Trial-Weather-/weather",
+        "/Users/YOUR_USERNAME/AI-Workshop/weather",
         "run",
         "weather.py"
       ]
