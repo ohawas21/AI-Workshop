@@ -16,7 +16,6 @@ def load_openapi_spec() -> dict:
         return json.load(f)
 
 def free_port(port: int, timeout: float = 3.0):
-    """Evict any process holding the port, then wait for it to be released."""
     try:
         result = subprocess.run(["lsof", "-ti", f":{port}"], capture_output=True, text=True)
         for pid in result.stdout.strip().split("\n"):
@@ -24,12 +23,11 @@ def free_port(port: int, timeout: float = 3.0):
                 os.kill(int(pid.strip()), signal.SIGTERM)
     except Exception:
         pass
-
     deadline = time.time() + timeout
     while time.time() < deadline:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             if s.connect_ex(("127.0.0.1", port)) != 0:
-                return  # Port is free
+                return
         time.sleep(0.1)
 
 client = httpx.AsyncClient(
