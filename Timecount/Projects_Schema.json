@@ -1,0 +1,1057 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Timecount API",
+    "description": "Provides access to the timecount services",
+    "contact": {
+      "name": "Timecount Support",
+      "url": "https://timecount.com",
+      "email": "support@timecount.com"
+    },
+    "version": "1.12.0"
+  },
+  "servers": [
+    {
+      "url": "//tutorial.formatgold.de/api"
+    }
+  ],
+  "tags": [
+     {
+      "name": "Projects",
+      "description": "This endpoint group and its subgroups handles project and project data.\n\nThe /projects/{project_id}/timesheets subgroup returns you all timesheets you find at the \"Erfassung\" tab.\n\nThe /projects/{project_id}/aggregations subgroup lets you create, modify and read all project aggregation (\"Angebote/Faktura\"). if you *finalize* one aggregation it will be marked readonly and if you changed parameters, you can *rebuild* an aggregation."
+    }
+],
+
+ "paths": {
+      "/projects/range": {
+      "get": {
+        "tags": [
+          "Projects"
+        ],
+        "operationId": "getProjectsRange",
+        "parameters": [
+          {
+            "name": "filter_visibility",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "enum": [
+                -1,
+                0,
+                1
+              ]
+            }
+          },
+          {
+            "name": "filter_project_from_years",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "all",
+              "enum": [
+                "all",
+                "0",
+                "1",
+                "2",
+                "3"
+              ]
+            }
+          },
+          {
+            "name": "filter_project_state",
+            "in": "query",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          },
+          {
+            "name": "filter_project_range_begin",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "filter_project_range_end",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": " ",
+            "content": {}
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Projects"
+        ],
+        "operationId": "postProjectsRange",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/postProjectsRange"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": " ",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "postProjectsRange"
+      }
+    },
+    "/projects/range/search/{q}": {
+      "get": {
+        "tags": [
+          "Projects"
+        ],
+        "operationId": "getProjectsRangeSearchQ",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": " ",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/projects/range/{id}": {
+      "get": {
+        "tags": [
+          "Projects"
+        ],
+        "operationId": "getProjectsRangeId",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": " ",
+            "content": {}
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Projects"
+        ],
+        "operationId": "putProjectsRangeId",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/putProjectsRangeId"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": " ",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "putProjectsRangeId"
+      },
+      "delete": {
+        "tags": [
+          "Projects"
+        ],
+        "operationId": "deleteProjectsRangeId",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": " ",
+            "content": {}
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Projects"
+        ],
+        "operationId": "patchProjectsRangeId",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/patchProjectsRangeId"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": " ",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "patchProjectsRangeId"
+      }
+    },"/projects/range/validate": {
+      "post": {
+        "tags": [
+          "Projects"
+        ],
+        "operationId": "postProjectsRangeValidate",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/postProjectsRangeValidate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": " ",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "postProjectsRangeValidate"
+      }
+    },
+    "/projects/range/deletable/{id}": {
+      "get": {
+        "tags": [
+          "Projects"
+        ],
+        "operationId": "getProjectsRangeDeletableId",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": " ",
+            "content": {}
+          }
+        }
+      }
+    }, "/projects/range/previous/{id}": {
+      "put": {
+        "tags": [
+          "Projects"
+        ],
+        "operationId": "putProjectsRangePreviousId",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/putProjectsRangePreviousId"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": " ",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "putProjectsRangePreviousId"
+      }
+    },
+    "/projects/range/next/{id}": {
+      "put": {
+        "tags": [
+          "Projects"
+        ],
+        "operationId": "putProjectsRangeNextId",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/putProjectsRangeNextId"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": " ",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "putProjectsRangeNextId"
+      }
+    },
+    "/projects": {
+      "get": {
+        "tags": [
+          "Projects"
+        ],
+        "operationId": "getProjects",
+        "parameters": [
+          {
+            "name": "filter_visibility",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "enum": [
+                -1,
+                0,
+                1
+              ]
+            }
+          },
+          {
+            "name": "filter_project_from_years",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "all",
+              "enum": [
+                "all",
+                "0",
+                "1",
+                "2",
+                "3"
+              ]
+            }
+          },
+          {
+            "name": "filter_project_state",
+            "in": "query",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          },
+          {
+            "name": "filter_project_range_begin",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "filter_project_range_end",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": " ",
+            "content": {}
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Projects"
+        ],
+        "operationId": "postProjects",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/postProjects"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": " ",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "postProjects"
+      }
+    },
+     "/projects/validate": {
+      "post": {
+        "tags": [
+          "Projects"
+        ],
+        "operationId": "postProjectsValidate",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/postProjectsValidate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": " ",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "postProjectsValidate"
+      }
+    },
+    "/projects/deletable/{id}": {
+      "get": {
+        "tags": [
+          "Projects"
+        ],
+        "operationId": "getProjectsDeletableId",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": " ",
+            "content": {}
+          }
+        }
+      }
+    }, "/projects/previous/{id}": {
+      "put": {
+        "tags": [
+          "Projects"
+        ],
+        "operationId": "putProjectsPreviousId",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/putProjectsPreviousId"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": " ",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "putProjectsPreviousId"
+      }
+    }, "/projects/next/{id}": {
+      "put": {
+        "tags": [
+          "Projects"
+        ],
+        "operationId": "putProjectsNextId",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/putProjectsNextId"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": " ",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "putProjectsNextId"
+      }
+    }
+},
+    "components": {
+        "schemas": {
+        "postProjectsRange": {
+          "type": "object",
+          "properties": {}
+        },  
+        "putProjectsRangeId": {
+          "type": "object",
+          "properties": {}
+        },
+        "patchProjectsRangeId": {
+          "type": "object",
+          "properties": {}
+        },
+        "postProjectsRangeValidate": {
+          "type": "object",
+          "properties": {}
+        },
+        "postProjects": {
+          "type": "object",
+          "properties": {}
+        },
+        "postProjectsValidate": {
+          "type": "object",
+          "properties": {}
+        },
+        "putProjectsPreviousId": {
+          "type": "object",
+          "properties": {}
+        },
+        "putProjectsNextId": {
+          "type": "object",
+          "properties": {}
+        },
+        "putProjectsRangePreviousId": {
+        "type": "object",
+        "properties": {
+          "filter": {
+            "type": "object",
+            "properties": {
+              "visibility": {
+                "type": "integer",
+                "format": "int32",
+                "enum": [
+                  -1,
+                  0,
+                  1
+                ]
+              },
+              "project_from_years": {
+                "type": "string",
+                "default": "all",
+                "enum": [
+                  "all",
+                  "0",
+                  "1",
+                  "2",
+                  "3"
+                ]
+              },
+              "project_state": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              },
+              "project_range_begin": {
+                "type": "string",
+                "format": "date"
+              },
+              "project_range_end": {
+                "type": "string",
+                "format": "date"
+              }
+            }
+          }
+        },
+        "description": " "
+        },
+        "putProjectsRangeNextId": {
+        "type": "object",
+        "properties": {
+          "filter": {
+            "type": "object",
+            "properties": {
+              "visibility": {
+                "type": "integer",
+                "format": "int32",
+                "enum": [
+                  -1,
+                  0,
+                  1
+                ]
+              },
+              "project_from_years": {
+                "type": "string",
+                "default": "all",
+                "enum": [
+                  "all",
+                  "0",
+                  "1",
+                  "2",
+                  "3"
+                ]
+              },
+              "project_state": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              },
+              "project_range_begin": {
+                "type": "string",
+                "format": "date"
+              },
+              "project_range_end": {
+                "type": "string",
+                "format": "date"
+              }
+            }
+          }
+        },
+        "description": " "
+        },
+         "putProjectsId": {
+        "required": [
+          "condition_id",
+          "customer_id",
+          "department_id",
+          "ends_at",
+          "pay_grade_id",
+          "rate_source_id",
+          "rate_source_type",
+          "repeat_includes",
+          "starts_at",
+          "state",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "customer_id": {
+            "type": "string"
+          },
+          "pay_grade_id": {
+            "type": "string"
+          },
+          "condition_id": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "0",
+              "1",
+              "2",
+              "3",
+              "4"
+            ]
+          },
+          "department_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "department_ids_additional": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "equal_pay": {
+            "type": "string",
+            "enum": [
+              "0",
+              "1"
+            ]
+          },
+          "invoice_address_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "invoice_contact_ids": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "starts_at": {
+            "type": "string",
+            "format": "date"
+          },
+          "ends_at": {
+            "type": "string",
+            "format": "date"
+          },
+          "token_prefix": {
+            "type": "string"
+          },
+          "token_counter": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "token_postfix": {
+            "type": "string"
+          },
+          "visibility": {
+            "type": "string",
+            "default": "1",
+            "enum": [
+              "0",
+              "1"
+            ]
+          },
+          "vat_identification": {
+            "type": "string"
+          },
+          "debitor_identification": {
+            "type": "string"
+          },
+          "pricing_notes": {
+            "type": "string"
+          },
+          "planning_notes": {
+            "type": "string"
+          },
+          "repeat_interval": {
+            "type": "string",
+            "enum": [
+              "week",
+              "month",
+              "quarter"
+            ]
+          },
+          "repeat_until": {
+            "type": "string",
+            "format": "date"
+          },
+          "repeat_includes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "aggregations",
+                "tasks",
+                "schedules",
+                "billing_service_entries"
+              ]
+            }
+          },
+          "rate_source_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "rate_source_type": {
+            "type": "string",
+            "enum": [
+              "BaseRate",
+              "Customer",
+              "Project"
+            ]
+          },
+          "timesheet_zone_package_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "aggregation_zone_package_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "billing_type_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "billing_gross_duration": {
+            "type": "string"
+          },
+          "billing_times_target": {
+            "type": "string"
+          },
+          "billing_employee_job": {
+            "type": "string"
+          },
+          "store": {
+            "type": "object",
+            "properties": {}
+          },
+          "xre_settings": {
+            "type": "object",
+            "properties": {}
+          }
+        },
+        "description": " "
+        },
+        "patchProjectsId": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "customer_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tariff_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "condition_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "equal_pay": {
+            "type": "string"
+          },
+          "pay_grade_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "0",
+              "1",
+              "2",
+              "3",
+              "4"
+            ]
+          },
+          "department_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "department_ids_additional": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "invoice_address_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "invoice_contact_ids": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "starts_at": {
+            "type": "string",
+            "format": "date"
+          },
+          "ends_at": {
+            "type": "string",
+            "format": "date"
+          },
+          "token_prefix": {
+            "type": "string"
+          },
+          "token_counter": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "token_postfix": {
+            "type": "string"
+          },
+          "visibility": {
+            "type": "string",
+            "default": "1",
+            "enum": [
+              "0",
+              "1"
+            ]
+          },
+          "vat_identification": {
+            "type": "string"
+          },
+          "debitor_identification": {
+            "type": "string"
+          },
+          "pricing_notes": {
+            "type": "string"
+          },
+          "planning_notes": {
+            "type": "string"
+          },
+          "repeat_interval": {
+            "type": "string",
+            "enum": [
+              "week",
+              "month",
+              "quarter"
+            ]
+          },
+          "repeat_until": {
+            "type": "string",
+            "format": "date"
+          },
+          "repeat_includes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "aggregations",
+                "tasks",
+                "schedules",
+                "billing_service_entries"
+              ]
+            }
+          },
+          "billing_type_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "billing_gross_duration": {
+            "type": "string"
+          },
+          "billing_times_target": {
+            "type": "string"
+          },
+          "billing_employee_job": {
+            "type": "string"
+          },
+          "rate_source_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "rate_source_type": {
+            "type": "string",
+            "enum": [
+              "BaseRate",
+              "Customer",
+              "Project"
+            ]
+          },
+          "timesheet_zone_package_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "aggregation_zone_package_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "store": {
+            "type": "object",
+            "properties": {}
+          },
+          "xre_settings": {
+            "type": "object",
+            "properties": {}
+          }
+        },
+        "description": " "
+        }
+        }
+    }
+}
