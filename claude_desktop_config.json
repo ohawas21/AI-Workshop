@@ -1,0 +1,47 @@
+{
+  "mcpServers": {
+    "timecount-Employees": {
+      "command": "/Users/omarhawas/AI-Workshop/Timecount/.venv/bin/python",
+      "args": [
+        "/Users/omarhawas/AI-Workshop/Timecount/Server_Employees.py",
+        "run"
+      ]
+    },
+    "brave-search": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-brave-search"
+      ],
+      "env": {
+        "BRAVE_API_KEY": "BSACjLe7OnzXgWlEICu0ejX3Ld4h7dJ"
+      }
+    },
+    "weather": {
+      "command": "/Users/omarhawas/.local/bin/uv",
+      "args": [
+        "--directory",
+        "/Users/omarhawas/AI-Workshop/weather",
+        "run",
+        "weather.py"
+      ]
+    },
+    "server-gmail-autoauth-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@gongrzhe/server-gmail-autoauth-mcp"
+      ],
+      "env": {
+        "GMAIL_MCP_CREDENTIALS_PATH": "/Users/omarhawas/.gmail-mcp/gcp-oauth.keys.json",
+        "GMAIL_MCP_TOKEN_PATH": "/Users/omarhawas/.gmail-mcp/credentials.json"
+      }
+    }
+  },
+  "preferences": {
+    "coworkScheduledTasksEnabled": true,
+    "ccdScheduledTasksEnabled": true,
+    "sidebarMode": "chat",
+    "coworkWebSearchEnabled": true
+  }
+}
