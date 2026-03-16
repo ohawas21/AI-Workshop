@@ -8,7 +8,7 @@ import httpx
 from fastmcp import FastMCP
 
 BASE_URL = "https://tutorial.formatgold.de/api"
-API_TOKEN = os.environ.get("API_TOKEN", "2b5fe67c2d8ac17bed27720a76d10584050b07be99028a31feb98c874fbff64a").strip()
+API_TOKEN = os.environ.get("API_TOKEN", "").strip()
 
 def load_openapi_spec() -> dict:
     here = os.path.dirname(__file__)
